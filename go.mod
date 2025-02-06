@@ -1,1 +1,1 @@
-module setuProject
+module github.com/MetsysEht/setuProject
