@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package health.v1;
+import "google/api/annotations.proto";
+
+service HealthService {
+  rpc LivenessCheck (LivenessRequest) returns (LivenessResponse) {
+    option (google.api.http) = {
+      get: "/live"
+    };
+  }
+  rpc ReadinessCheck (ReadinessRequest) returns (ReadinessResponse){
+    option (google.api.http) = {
+      get: "/ready"
+    };
+  }
+}
+
+message LivenessRequest {
+  // Add fields if needed, otherwise keep it empty
+}
+
+message LivenessResponse {
+  ServingStatus status = 1;
+  repeated StatusCheck status_checks = 2;
+}
+
+message ReadinessRequest {
+  // Add fields if needed, otherwise keep it empty
+}
+
+message ReadinessResponse {
+  ServingStatus status = 1;
+  repeated StatusCheck status_checks = 2;
+}
+
+message StatusCheck {
+  string name = 1;
+  string status = 2;
+}
+
+enum ServingStatus {
+  SERVING_STATUS_UNKNOWN = 0;
+  SERVING_STATUS_SERVING = 1;
+  SERVING_STATUS_NOT_SERVING = 2;
+}

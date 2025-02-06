@@ -9,3 +9,4 @@
 /.idea
 /config/dev.toml
 /rpc/*
+/docs

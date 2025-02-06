@@ -2,56 +2,53 @@ package main
 
 import (
 	"context"
-	"errors"
-	"net/http"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/MetsysEht/setuProject/internal/boot"
 	"github.com/MetsysEht/setuProject/internal/server"
-	"github.com/MetsysEht/setuProject/pkg/logger"
+	grpcprometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
+	"google.golang.org/grpc"
 )
 
 func main() {
-	_, cancel := context.WithCancel(context.Background())
+	// Initialize context
+	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	boot.Initialize()
-	server.Initialize()
-	srv := &http.Server{
-		Addr:    ":8080",
-		Handler: server.S.Handler(),
+	s, err := server.NewServer(
+		boot.Config.App.Interfaces.Service,
+		server.GrpcHandlerFunc(ctx),
+		server.HttpHandlerFunc(ctx),
+		getInterceptors(ctx)...,
+	)
+	if err != nil {
+		log.Fatalf("failed to create new server: %v", err)
 	}
 
-	go func() {
-		// service connections
-		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			logger.L.Fatalf("listen: %s\n", err)
-		}
-	}()
-	logger.L.Infof("Server running at port :8080")
-	// Wait for interrupt signal to gracefully shutdown the server with
-	// a timeout of 5 seconds.
-	quit := make(chan os.Signal, 1)
-	// kill (no param) default send syscall.SIGTERM
-	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	logger.L.Infof("Shutdown Server ...")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		logger.L.Fatal("Server Shutdown:", err)
+	err = s.Start()
+	if err != nil {
+		log.Fatalf("failed to start server: %v", err)
 	}
-	// catching ctx.Done(). timeout of 5 seconds.
-	select {
-	case <-ctx.Done():
-		logger.L.Infof("timeout of 5 seconds.")
-	}
-	logger.L.Infof("Server exiting")
 
+	// accept graceful shutdowns when quit via SIGINT (Ctrl+C) or SIGTERM.
+	// SIGKILL, SIGQUIT will not be caught.
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGTERM, syscall.SIGINT)
+
+	// Block until signal is received.
+	<-c
+	err = s.Stop(ctx)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func getInterceptors(_ context.Context) []grpc.UnaryServerInterceptor {
+	return []grpc.UnaryServerInterceptor{
+		grpcprometheus.UnaryServerInterceptor,
+	}
 }

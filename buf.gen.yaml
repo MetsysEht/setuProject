@@ -1,0 +1,33 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/MetsysEht/setuProject/rpc
+    except:
+      - buf.build/googleapis/googleapis
+      - buf.build/razorpay/googleapis-pubsub
+plugins:
+  - name: go
+    out: rpc
+    opt:
+      - paths=source_relative
+  - name: go-grpc
+    out: rpc
+    opt:
+      - paths=source_relative
+  - name: grpc-gateway
+    out: rpc
+    opt:
+      - paths=source_relative
+      - allow_delete_body=true
+  - name: openapiv2
+    out: docs
+    opt:
+      - generate_unbound_methods=true
+      - disable_default_errors=true
+      - allow_merge=false
+      - include_package_in_tags=false
+      - json_names_for_fields=false
+      - include_package_in_tags=true
+      - fqn_for_openapi_name=true
+      - allow_delete_body=true
