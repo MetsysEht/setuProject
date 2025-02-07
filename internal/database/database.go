@@ -19,4 +19,5 @@ func GetDatabase(c *gormDatabase.Config) (*gorm.DB, error) {
 
 func updateTables(db *gorm.DB) {
 	_ = db.AutoMigrate(&model.PANVerification{})
+	_ = db.AutoMigrate(&model.RPDVerification{})
 }

@@ -6,8 +6,10 @@ import (
 
 type IManager interface {
 	VerifyPan(context.Context, *PANVerification) (*PANVerification, error)
+	CreateRPD(ctx context.Context, rpd *RPD) (*RPD, error)
 }
 
 type IRepo interface {
-	Save(_ context.Context, verification *PANVerification) error
+	SaveKYCVerification(_ context.Context, verification *PANVerification) error
+	SaveRPDVerification(_ context.Context, verification *RPD) error
 }

@@ -22,13 +22,15 @@
 [SetuGatewayService]
     mock = false
     BaseUrl = "https://dg-sandbox.setu.co"
+    ClientID = "test-client"
+    ClientSecret = "891707ee-d6cd-4744-a28d-058829e30f12"
+    ProductInstanceID = "891707ee-d6cd-4744-a28d-058829e30f10"
     [SetuGatewayService.ValidatePAN]
         path = "/api/verify/pan"
         method = "POST"
-        [SetuGatewayService.ValidatePAN.Headers]
-            x-client-id="test-client"
-            x-client-secret="891707ee-d6cd-4744-a28d-058829e30f12"
-            x-product-instance-id="891707ee-d6cd-4744-a28d-058829e30f10"
+    [SetuGatewayService.CreateRPD]
+        path = "/api/verify/ban/reverse"
+        method = "POST"
     [SetuGatewayService.Auth]
         username = ""
         password = ""

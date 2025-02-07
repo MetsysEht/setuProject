@@ -17,3 +17,13 @@ type PANVerification struct {
 	UpdatedAt     time.Time
 	DeletedAt     gorm.DeletedAt `gorm:"index"`
 }
+
+type RPDVerification struct {
+	ID        uint `gorm:"primaryKey"`
+	UserID    string
+	TraceID   string `gorm:"index"`
+	Status    string `gorm:"index"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+}

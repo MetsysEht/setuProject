@@ -12,4 +12,8 @@ type SetuGatewayService struct {
 	BaseUrl                 string
 	Auth                    Auth
 	ValidatePAN             Endpoint
+	CreateRPD               Endpoint
+	ClientID                string
+	ClientSecret            string
+	ProductInstanceID       string
 }

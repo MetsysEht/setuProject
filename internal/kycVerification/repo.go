@@ -17,7 +17,7 @@ func NewRepository(db *gorm.DB) IRepo {
 	}
 }
 
-func (r *Repo) Save(_ context.Context, verification *PANVerification) error {
+func (r *Repo) SaveKYCVerification(_ context.Context, verification *PANVerification) error {
 	status := false
 	if verification.Success == "SUCCESS" {
 		status = true
@@ -28,6 +28,16 @@ func (r *Repo) Save(_ context.Context, verification *PANVerification) error {
 		Consent:       verification.Consent,
 		RequestReason: verification.Reason,
 		Status:        status,
+	}
+	tx := r.db.Save(&mod)
+	return tx.Error
+}
+
+func (r *Repo) SaveRPDVerification(_ context.Context, rpd *RPD) error {
+	mod := model.RPDVerification{
+		UserID:  rpd.UserID,
+		TraceID: rpd.TraceID,
+		Status:  rpd.RPDStatus,
 	}
 	tx := r.db.Save(&mod)
 	return tx.Error

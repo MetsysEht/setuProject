@@ -29,3 +29,22 @@ func (p *PANVerification) Validate() error {
 	}
 	return nil
 }
+
+type RPD struct {
+	UserID    string `json:"user_id"`
+	ShortURL  string `json:"short_url"`
+	UPILink   string `json:"upi_link"`
+	RPDStatus string `json:"rpd_status"`
+	TraceID   string `json:"traceId"`
+	UpiBillID string `json:"upiBillId"`
+}
+
+func (r *RPD) Validate() error {
+	err := validation.ValidateStruct(r,
+		validation.Field(&r.UserID, validation.Required),
+	)
+	if err != nil {
+		return status.Error(codes.InvalidArgument, err.Error())
+	}
+	return nil
+}

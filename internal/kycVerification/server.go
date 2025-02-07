@@ -37,3 +37,23 @@ func (s *Server) VerifyPan(ctx context.Context, req *kyc_verificationv1.VerifyPa
 		Message: resp.Reason,
 	}, nil
 }
+
+func (s *Server) VerifyRPD(ctx context.Context, req *kyc_verificationv1.RPDRequest) (*kyc_verificationv1.RpdResponse, error) {
+	rpd := &RPD{
+		UserID: req.GetUserId(),
+	}
+	err := rpd.Validate()
+	if err != nil {
+		return nil, err
+	}
+	rpd, err = s.manager.CreateRPD(ctx, rpd)
+	if err != nil {
+		return nil, err
+	}
+	resp := &kyc_verificationv1.RpdResponse{
+		ShortUrl: rpd.ShortURL,
+		Status:   rpd.RPDStatus,
+		UpiLink:  rpd.UPILink,
+	}
+	return resp, nil
+}

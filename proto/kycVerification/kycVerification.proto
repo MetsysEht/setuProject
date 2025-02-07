@@ -7,8 +7,13 @@ import "google/api/annotations.proto";
 service KYCVerificationService {
   rpc VerifyPan (VerifyPanRequest) returns (VerifyPanResponse){
     option (google.api.http) = {
-      post: "/kyc/verif/pan"
+      post: "/kyc/verify/pan"
       body: "*"
+    };
+  }
+  rpc VerifyRPD (RPDRequest) returns (RpdResponse){
+    option (google.api.http) = {
+      get: "/kyc/verify/rpd"
     };
   }
 }
@@ -23,6 +28,16 @@ message VerifyPanRequest {
 message VerifyPanResponse {
   string success = 1;
   string message = 2;
+}
+
+message RPDRequest {
+  string user_id = 1;
+}
+
+message RpdResponse {
+  string short_url = 1;
+  string status = 2;
+  string upi_link = 3;
 }
 
 
