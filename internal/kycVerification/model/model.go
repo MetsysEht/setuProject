@@ -21,7 +21,7 @@ type PANVerification struct {
 type RPDVerification struct {
 	ID        uint `gorm:"primaryKey"`
 	UserID    string
-	TraceID   string `gorm:"index"`
+	TraceID   string `gorm:"index;unique"`
 	Status    string `gorm:"index"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

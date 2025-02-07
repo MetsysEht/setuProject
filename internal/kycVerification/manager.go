@@ -43,6 +43,9 @@ func (m *Manager) VerifyPan(ctx context.Context, panDetails *PANVerification) (*
 }
 
 func (m *Manager) CreateRPD(ctx context.Context, rpd *RPD) (*RPD, error) {
+	if !m.repo.GetKYCVerifiedUser(ctx, rpd) {
+		return nil, status.Error(codes.InvalidArgument, "User not verified PAN")
+	}
 	resp, err := m.setuGateway.CreateRPD(ctx, &setuGateway.RPDPayload{
 		RedirectionConfig: setuGateway.RedirectionConfig{},
 		AdditionalData: map[string]string{
@@ -63,6 +66,23 @@ func (m *Manager) CreateRPD(ctx context.Context, rpd *RPD) (*RPD, error) {
 	rpd.UpiBillID = resp.UpiBillID
 	rpd.UPILink = resp.UpiLink
 	err = m.repo.SaveRPDVerification(ctx, rpd)
+	if err != nil {
+		return nil, err
+	}
+	return rpd, nil
+}
+
+func (m *Manager) RPDWebhook(ctx context.Context, rpd *RPD, success bool) (*RPD, error) {
+	rpd, err := m.repo.GetRPDFromTraceID(ctx, rpd.TraceID)
+	if err != nil {
+		return nil, err
+	}
+	if success {
+		rpd.RPDStatus = "Success"
+	} else {
+		rpd.RPDStatus = "Failed"
+	}
+	err = m.repo.UpdateRPDVerificationStatus(ctx, rpd)
 	if err != nil {
 		return nil, err
 	}

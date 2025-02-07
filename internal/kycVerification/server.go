@@ -57,3 +57,14 @@ func (s *Server) VerifyRPD(ctx context.Context, req *kyc_verificationv1.RPDReque
 	}
 	return resp, nil
 }
+
+func (s *Server) RPDWebhook(ctx context.Context, req *kyc_verificationv1.RPDWebhookRequest) (*kyc_verificationv1.RPDWebhookResponse, error) {
+	rpd := &RPD{
+		TraceID: req.TraceId,
+	}
+	rpd, err := s.manager.RPDWebhook(ctx, rpd, req.Data.Rpd.Success)
+	if err != nil {
+		return nil, err
+	}
+	return &kyc_verificationv1.RPDWebhookResponse{}, nil
+}
