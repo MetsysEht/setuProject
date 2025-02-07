@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package kyc_verification.v1;
+import "google/api/annotations.proto";
+
+
+service KYCVerificationService {
+  rpc VerifyPan (VerifyPanRequest) returns (VerifyPanResponse){
+    option (google.api.http) = {
+      post: "/kyc/verif/pan"
+      body: "*"
+    };
+  }
+}
+
+message VerifyPanRequest {
+  string user_id = 1;
+  string pan = 2;
+  bool consent = 3;
+  string reason = 4;
+}
+
+message VerifyPanResponse {
+  string success = 1;
+  string message = 2;
+}
+
+

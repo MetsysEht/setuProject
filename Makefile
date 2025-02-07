@@ -115,7 +115,7 @@ dev-docker-down:
 
 .PHONY: docker-build-api
 docker-build-api:
-	@DOCKER_BUILDKIT=1 docker build . --secret id=GIT_TOKEN --build-arg=GIT_USERNAME -f build/docker/prod/Dockerfile.api -t razorpay/catalyst:latest
+	@DOCKER_BUILDKIT=1 docker build . --secret id=GIT_TOKEN --build-arg=GIT_USERNAME -f build/docker/prod/Dockerfile.api -t MetsysEht/setuProject:latest
 
 .PHONY: docs-uml ## Generates UML file
 docs-uml:

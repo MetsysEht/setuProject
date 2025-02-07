@@ -5,7 +5,6 @@ managed:
     default: github.com/MetsysEht/setuProject/rpc
     except:
       - buf.build/googleapis/googleapis
-      - buf.build/razorpay/googleapis-pubsub
 plugins:
   - name: go
     out: rpc

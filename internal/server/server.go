@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"net/http/pprof"
-	"strings"
 	"time"
 
 	"github.com/MetsysEht/setuProject/internal/boot"
@@ -83,20 +82,8 @@ func newHttpServer(r RegisterHttpHandlers) (*http.Server, error) {
 		}
 	}
 	handler := cors.AllowAll().Handler(mux)
-	handler = CustomRequestHeader(handler)
 	server := http.Server{Handler: handler}
 	return &server, nil
-}
-
-func CustomRequestHeader(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.Contains(r.URL.Path, "/k2/verify") || strings.Contains(r.URL.Path, "/cbdt/verify") || strings.Contains(r.URL.Path, "/tctp/verify") {
-			r.Header.Set("Accept", "text/plain")
-		} else if strings.Contains(r.URL.Path, "/cst/verify") {
-			r.Header.Set("Content-type", "application/xml")
-		}
-		h.ServeHTTP(w, r)
-	})
 }
 
 func newInternalServer() (*http.Server, error) {

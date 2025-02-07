@@ -5,8 +5,9 @@ import "github.com/MetsysEht/setuProject/pkg/gormDatabase"
 // App contains application-specific config values
 
 type Config struct {
-	App App
-	DB  gormDatabase.Config
+	App                App
+	DB                 gormDatabase.Config
+	SetuGatewayService SetuGatewayService
 }
 
 type App struct {

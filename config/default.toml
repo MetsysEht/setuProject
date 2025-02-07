@@ -18,3 +18,28 @@
     Port        ="3306"
     DBName      ="invoice"
     Charset     ="utf8mb4"
+
+[SetuGatewayService]
+    mock = false
+    BaseUrl = "https://dg-sandbox.setu.co"
+    [SetuGatewayService.ValidatePAN]
+        path = "/api/verify/pan"
+        method = "POST"
+        [SetuGatewayService.ValidatePAN.Headers]
+            x-client-id="test-client"
+            x-client-secret="891707ee-d6cd-4744-a28d-058829e30f12"
+            x-product-instance-id="891707ee-d6cd-4744-a28d-058829e30f10"
+    [SetuGatewayService.Auth]
+        username = ""
+        password = ""
+    [SetuGatewayService.HystrixResiliencyConfig]
+        MaxConcurrentRequests = 100
+        RequestVolumeThreshold = 20
+        CircuitBreakerSleepWindow = 5000
+        ErrorPercentThreshold = 50
+        CircuitBreakerTimeout = 10000
+    [SetuGatewayService.ConnPoolConfig]
+        Timeout                             = 10000
+        KeepAliveTimeout                    = 90000
+        MaxIdleConnections                  = 30
+        SkipCertVerification                = false
