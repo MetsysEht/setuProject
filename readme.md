@@ -15,8 +15,9 @@ Make sure you have the following installed:
 git clone https://github.com/MetsysEht/setuProject
 cd setuProject
 ```
-
 ### 2️⃣ Build and Run with Docker Compose
+Before running the application, update the .env file with the necessary configuration:
+
 ```sh
 docker-compose up -d --build
 ```

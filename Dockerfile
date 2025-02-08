@@ -45,6 +45,7 @@ ENV DUMB_INIT_SETSID=0
 WORKDIR /app
 
 RUN apk add --update --no-cache dumb-init su-exec curl tzdata
+RUN export $(grep -v '^#' .env | xargs)
 
 RUN chmod +x entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh", "api"]
