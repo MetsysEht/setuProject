@@ -68,3 +68,19 @@ func (s *Server) RPDWebhook(ctx context.Context, req *kyc_verificationv1.RPDWebh
 	}
 	return &kyc_verificationv1.RPDWebhookResponse{}, nil
 }
+
+func (s *Server) GetStats(ctx context.Context, _ *kyc_verificationv1.Empty) (*kyc_verificationv1.KYCStatistics, error) {
+	stats, err := s.manager.GetStats(ctx)
+	if err != nil {
+		return nil, err
+	}
+	resp := &kyc_verificationv1.KYCStatistics{
+		TotalKycAttempted:                    int32(stats.TotalKYCAttempted),
+		TotalKycSuccessful:                   int32(stats.TotalKYCSuccessful),
+		TotalKycFailed:                       int32(stats.TotalKYCFailed),
+		TotalKycFailedDueToPan:               int32(stats.TotalKYCFailedDueToPAN),
+		TotalKycFailedDueToBankAccount:       int32(stats.TotalKYCFailedDueToBankAccount),
+		TotalKycFailedDueToPanAndBankAccount: -1,
+	}
+	return resp, nil
+}

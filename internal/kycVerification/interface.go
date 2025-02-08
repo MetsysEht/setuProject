@@ -6,14 +6,19 @@ import (
 
 type IManager interface {
 	VerifyPan(context.Context, *PANVerification) (*PANVerification, error)
-	CreateRPD(ctx context.Context, rpd *RPD) (*RPD, error)
-	RPDWebhook(ctx context.Context, rpd *RPD, success bool) (*RPD, error)
+	CreateRPD(context.Context, *RPD) (*RPD, error)
+	RPDWebhook(context.Context, *RPD, bool) (*RPD, error)
+	GetStats(context.Context) (*KYCStatistics, error)
 }
 
 type IRepo interface {
-	SaveKYCVerification(_ context.Context, verification *PANVerification) error
-	SaveRPDVerification(_ context.Context, verification *RPD) error
-	GetRPDFromTraceID(_ context.Context, traceId string) (*RPD, error)
-	GetKYCVerifiedUser(_ context.Context, rpd *RPD) bool
-	UpdateRPDVerificationStatus(_ context.Context, rpd *RPD) error
+	SaveKYCVerification(context.Context, *PANVerification) error
+	SaveRPDVerification(context.Context, *RPD) error
+	GetRPDFromTraceID(context.Context, string) (*RPD, error)
+	GetKYCVerifiedUser(context.Context, *RPD) bool
+	UpdateRPDVerificationStatus(context.Context, *RPD) error
+	GetTotalKYCAttempts(context.Context) (int64, error)
+	GetTotalKYCSuccess(context.Context) (int64, error)
+	GetTotalRPDKYCFailed(context.Context) (int64, error)
+	GetTotalPANKYCFailed(context.Context) (int64, error)
 }

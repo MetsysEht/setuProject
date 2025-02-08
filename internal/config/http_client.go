@@ -30,8 +30,9 @@ type HystrixResiliencyConfig struct {
 }
 
 type Endpoint struct {
-	Path    string
-	Method  string
-	Timeout time.Duration
-	Headers map[string]string `mapstructure:"headers"`
+	Path      string
+	Method    string
+	ProductID string
+	Timeout   time.Duration
+	Headers   map[string]string `mapstructure:"headers"`
 }

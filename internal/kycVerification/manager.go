@@ -88,3 +88,31 @@ func (m *Manager) RPDWebhook(ctx context.Context, rpd *RPD, success bool) (*RPD,
 	}
 	return rpd, nil
 }
+
+func (m *Manager) GetStats(ctx context.Context) (*KYCStatistics, error) {
+	totalKYCAttempt, err := m.repo.GetTotalKYCAttempts(ctx)
+	if err != nil {
+		return nil, err
+	}
+	totalKYCSuccess, err := m.repo.GetTotalKYCSuccess(ctx)
+	if err != nil {
+		return nil, err
+	}
+	totalRPDFailed, err := m.repo.GetTotalRPDKYCFailed(ctx)
+	if err != nil {
+		return nil, err
+	}
+	totalPANFailed, err := m.repo.GetTotalPANKYCFailed(ctx)
+	if err != nil {
+		return nil, err
+	}
+	totalKYCFailed := totalKYCAttempt - totalKYCSuccess
+	return &KYCStatistics{
+		TotalKYCAttempted:              totalKYCAttempt,
+		TotalKYCSuccessful:             totalKYCSuccess,
+		TotalKYCFailed:                 totalKYCFailed,
+		TotalKYCFailedDueToPAN:         totalPANFailed,
+		TotalKYCFailedDueToBankAccount: totalRPDFailed,
+		TotalKYCFailedDueToPANAndBank:  -1,
+	}, nil
+}

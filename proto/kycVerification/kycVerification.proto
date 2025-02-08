@@ -22,7 +22,14 @@ service KYCVerificationService {
       body: "*"
     };
   }
+  rpc GetStats (Empty) returns (KYCStatistics){
+    option (google.api.http) = {
+      get: "/kyc/stats"
+    };
+  }
 }
+
+message Empty {}
 
 message VerifyPanRequest {
   string user_id = 1;
@@ -100,3 +107,11 @@ message RPDWebhookRequest {
 
 message RPDWebhookResponse{}
 
+message KYCStatistics {
+  int32 total_kyc_attempted = 1;
+  int32 total_kyc_successful = 2;
+  int32 total_kyc_failed = 3;
+  int32 total_kyc_failed_due_to_pan = 4;
+  int32 total_kyc_failed_due_to_bank_account = 5;
+  int32 total_kyc_failed_due_to_pan_and_bank_account = 6;
+}

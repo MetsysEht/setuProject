@@ -75,3 +75,43 @@ func (r *Repo) GetKYCVerifiedUser(_ context.Context, rpd *RPD) bool {
 	}
 	return true
 }
+
+func (r *Repo) GetTotalKYCAttempts(_ context.Context) (int64, error) {
+	var count int64
+
+	tx := r.db.Model(&model.PANVerification{}).Count(&count)
+	if tx.Error != nil {
+		return 0, nil
+	}
+	return count, nil
+}
+
+func (r *Repo) GetTotalKYCSuccess(_ context.Context) (int64, error) {
+	var count int64
+
+	tx := r.db.Model(&model.RPDVerification{}).Where("status = Success").Count(&count)
+	if tx.Error != nil {
+		return 0, nil
+	}
+	return count, nil
+}
+
+func (r *Repo) GetTotalRPDKYCFailed(_ context.Context) (int64, error) {
+	var count int64
+
+	tx := r.db.Model(&model.RPDVerification{}).Where("status = Failed").Count(&count)
+	if tx.Error != nil {
+		return 0, nil
+	}
+	return count, nil
+}
+
+func (r *Repo) GetTotalPANKYCFailed(_ context.Context) (int64, error) {
+	var count int64
+
+	tx := r.db.Model(&model.PANVerification{}).Where("status = ?", false).Count(&count)
+	if tx.Error != nil {
+		return 0, nil
+	}
+	return count, nil
+}

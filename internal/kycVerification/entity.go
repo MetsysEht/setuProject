@@ -48,3 +48,12 @@ func (r *RPD) Validate() error {
 	}
 	return nil
 }
+
+type KYCStatistics struct {
+	TotalKYCAttempted              int64 `json:"total_kyc_attempted"`
+	TotalKYCSuccessful             int64 `json:"total_kyc_successful"`
+	TotalKYCFailed                 int64 `json:"total_kyc_failed"`
+	TotalKYCFailedDueToPAN         int64 `json:"total_kyc_failed_due_to_pan"`
+	TotalKYCFailedDueToBankAccount int64 `json:"total_kyc_failed_due_to_bank_account"`
+	TotalKYCFailedDueToPANAndBank  int64 `json:"total_kyc_failed_due_to_pan_and_bank_account"`
+}

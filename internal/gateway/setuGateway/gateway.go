@@ -40,7 +40,7 @@ func (g *gateway) VerifyPan(ctx context.Context, request *PANRequest) (*PANRespo
 	}
 	headers["x-client-id"] = g.cfg.ClientID
 	headers["x-client-secret"] = g.cfg.ClientSecret
-	headers["x-product-instance-id"] = g.cfg.ProductInstanceID
+	headers["x-product-instance-id"] = g.cfg.ValidatePAN.ProductID
 	resp, err, statusCode := httpclient.SendRequest(ctx, url, g.cfg.ValidatePAN.Method, nil, request, headers, g.client)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (g *gateway) CreateRPD(ctx context.Context, request *RPDPayload) (*RPDRespo
 	}
 	headers["x-client-id"] = g.cfg.ClientID
 	headers["x-client-secret"] = g.cfg.ClientSecret
-	headers["x-product-instance-id"] = g.cfg.ProductInstanceID
+	headers["x-product-instance-id"] = g.cfg.CreateRPD.ProductID
 	resp, err, statusCode := httpclient.SendRequest(ctx, url, g.cfg.ValidatePAN.Method, nil, request, headers, g.client)
 	if err != nil {
 		return nil, err
