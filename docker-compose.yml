@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   app:
+    build: .
     image: setu
     container_name: setu-app
     depends_on:
