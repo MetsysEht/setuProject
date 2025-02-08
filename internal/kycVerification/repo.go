@@ -89,7 +89,7 @@ func (r *Repo) GetTotalKYCAttempts(_ context.Context) (int64, error) {
 func (r *Repo) GetTotalKYCSuccess(_ context.Context) (int64, error) {
 	var count int64
 
-	tx := r.db.Model(&model.RPDVerification{}).Where("status = Success").Count(&count)
+	tx := r.db.Model(&model.RPDVerification{}).Where("status = ?", "Success").Count(&count)
 	if tx.Error != nil {
 		return 0, nil
 	}
@@ -99,7 +99,7 @@ func (r *Repo) GetTotalKYCSuccess(_ context.Context) (int64, error) {
 func (r *Repo) GetTotalRPDKYCFailed(_ context.Context) (int64, error) {
 	var count int64
 
-	tx := r.db.Model(&model.RPDVerification{}).Where("status = Failed").Count(&count)
+	tx := r.db.Model(&model.RPDVerification{}).Where("status = ?", "Failed").Count(&count)
 	if tx.Error != nil {
 		return 0, nil
 	}

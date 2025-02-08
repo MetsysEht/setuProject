@@ -34,7 +34,7 @@ func (s *Server) VerifyPan(ctx context.Context, req *kyc_verificationv1.VerifyPa
 	}
 	return &kyc_verificationv1.VerifyPanResponse{
 		Success: resp.Success,
-		Message: resp.Reason,
+		Message: resp.ResponseReason,
 	}, nil
 }
 

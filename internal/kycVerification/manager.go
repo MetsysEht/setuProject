@@ -106,7 +106,7 @@ func (m *Manager) GetStats(ctx context.Context) (*KYCStatistics, error) {
 	if err != nil {
 		return nil, err
 	}
-	totalKYCFailed := totalKYCAttempt - totalKYCSuccess
+	totalKYCFailed := totalPANFailed + totalRPDFailed
 	return &KYCStatistics{
 		TotalKYCAttempted:              totalKYCAttempt,
 		TotalKYCSuccessful:             totalKYCSuccess,
