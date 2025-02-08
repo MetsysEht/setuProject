@@ -31,19 +31,21 @@ docker ps
 This should show both `setu` and `mysql-db` containers running.
 
 ### 4️⃣ Access the Application
-- Https server is running on:  
+- https server is running on:  
   **http://localhost:8081**
 - RPC server is running on:  
   **http://localhost:8080**
+- Prometheus server is running on:  
+  **http://localhost:8082/metrics**
 - MySQL will be accessible on **localhost:3307**
 
 ## 🛠 Environment Variables
-Modify the `docker-compose.yml` or use `.env` file for database settings:
+Modify the `docker-compose.yml` or use `.env` file for Setu client settings:
 ```
-DB_HOST=db
-DB_USER=root
-DB_PASSWORD=password
-DB_NAME=setu
+SETUGATEWAYSERVICE_CLIENTID = "client-id"
+SETUGATEWAYSERVICE_CLIENTSECRET = "client-secret"
+SETUGATEWAYSERVICE_VALIDATEPAN_PRODUCTID = "pan-product-id"
+SETUGATEWAYSERVICE_CREATERPD_PRODUCTID = "rpd-product-id"
 ```
 
 ## 🛑 Stopping and Cleaning Up

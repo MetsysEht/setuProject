@@ -19,6 +19,7 @@ import (
 	"github.com/rs/cors"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type Server struct {
@@ -66,7 +67,9 @@ func NewServer(config config.NetworkInterfaces, grpcHandlers RegisterGrpcHandler
 
 func newGRPCServer(r RegisterGrpcHandlers, interceptors ...grpc.UnaryServerInterceptor) (*grpc.Server, error) {
 	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(grpcmiddleware.ChainUnaryServer(interceptors...)))
+	reflection.Register(grpcServer)
 	err := r(grpcServer)
+
 	if err != nil {
 		return nil, err
 	}
