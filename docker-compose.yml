@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    image: setu
+    container_name: setu-app
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: mydatabase
+    restart: unless-stopped
+
+  db:
+    image: mysql:8
+    container_name: mysql-db
+    ports:
+      - "3307:3307"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: setu
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

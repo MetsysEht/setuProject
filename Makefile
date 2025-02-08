@@ -1,6 +1,8 @@
 # Dir where build binaries are generated. The dir should be gitignored
 BUILD_OUT_DIR := "bin/"
 
+API_OUT       := "bin/api"
+API_MAIN_FILE := "cmd/api/main.go"
 # go binary. Change this to experiment with different versions of go.
 GO       = go
 
