@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/MetsysEht/setuProject/internal/boot"
 	"github.com/MetsysEht/setuProject/internal/server"
+	"github.com/MetsysEht/setuProject/pkg/logger"
 	grpcprometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"google.golang.org/grpc"
 )
@@ -26,14 +26,14 @@ func main() {
 		getInterceptors(ctx)...,
 	)
 	if err != nil {
-		log.Fatalf("failed to create new server: %v", err)
+		logger.L.Fatalf("failed to create new server: %v", err)
 	}
 
 	err = s.Start()
 	if err != nil {
-		log.Fatalf("failed to start server: %v", err)
+		logger.L.Fatalf("failed to start server: %v", err)
 	}
-
+	logger.L.Infof("Server up and running...")
 	// accept graceful shutdowns when quit via SIGINT (Ctrl+C) or SIGTERM.
 	// SIGKILL, SIGQUIT will not be caught.
 	c := make(chan os.Signal, 1)

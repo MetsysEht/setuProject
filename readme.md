@@ -33,9 +33,10 @@ This should show both `setu` and `mysql-db` containers running.
 ### 4️⃣ Access the Application
 - https server is running on:  
   **http://localhost:8081**
-- RPC server is running on:  
+- gRPC server is running on:  
   **http://localhost:8080**
-- Prometheus server is running on:  
+  - You can use server reflection to get all the RPC running on server
+- Prometheus metrics are available at:  
   **http://localhost:8082/metrics**
 - MySQL will be accessible on **localhost:3307**
 

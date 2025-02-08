@@ -10,6 +10,7 @@ import (
 
 	"github.com/MetsysEht/setuProject/internal/boot"
 	"github.com/MetsysEht/setuProject/internal/config"
+	"github.com/MetsysEht/setuProject/internal/server/middleware"
 	"github.com/MetsysEht/setuProject/pkg/logger"
 	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpcprometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
@@ -85,6 +86,7 @@ func newHttpServer(r RegisterHttpHandlers) (*http.Server, error) {
 		}
 	}
 	handler := cors.AllowAll().Handler(mux)
+	handler = middleware.LoggingMiddleware(logger.L, mux)
 	server := http.Server{Handler: handler}
 	return &server, nil
 }
